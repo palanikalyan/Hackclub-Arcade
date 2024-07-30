@@ -1,2 +1,2 @@
-# Pybrowser
-A python browser made with the help of pyQt
+# hackClub
+Sereis of Hackclub projects
