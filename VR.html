@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Simple 3D Environment</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    try {
+      // Set up scene, camera, and renderer
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Create a ground plane
+      var planeGeometry = new THREE.PlaneGeometry(500, 500);
+      var planeMaterial = new THREE.MeshStandardMaterial({ color: 0x555555 });
+      var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.rotation.x = -Math.PI / 2; // Rotate the plane to lie flat
+      scene.add(plane);
+
+      // Add a basic cube
+      var cubeGeometry = new THREE.BoxGeometry();
+      var cubeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      cube.position.set(0, 1, 0); // Position the cube slightly above the ground
+      scene.add(cube);
+
+      // Add some lights
+      var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      var pointLight = new THREE.PointLight(0xffffff, 1);
+      pointLight.position.set(10, 10, 10);
+      scene.add(pointLight);
+
+      // Set up basic camera controls
+      var controls = {
+        forward: false,
+        backward: false,
+        left: false,
+        right: false
+      };
+
+      function onKeyDown(event) {
+        switch (event.keyCode) {
+          case 87: // W
+            controls.forward = true;
+            break;
+          case 83: // S
+            controls.backward = true;
+            break;
+          case 65: // A
+            controls.left = true;
+            break;
+          case 68: // D
+            controls.right = true;
+            break;
+        }
+      }
+
+      function onKeyUp(event) {
+        switch (event.keyCode) {
+          case 87: // W
+            controls.forward = false;
+            break;
+          case 83: // S
+            controls.backward = false;
+            break;
+          case 65: // A
+            controls.left = false;
+            break;
+          case 68: // D
+            controls.right = false;
+            break;
+        }
+      }
+
+      document.addEventListener('keydown', onKeyDown);
+      document.addEventListener('keyup', onKeyUp);
+
+      // Camera position and movement speed
+      camera.position.set(0, 2, 5);
+      var speed = 0.1;
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Handle camera movement
+        if (controls.forward) camera.position.z -= speed;
+        if (controls.backward) camera.position.z += speed;
+        if (controls.left) camera.position.x -= speed;
+        if (controls.right) camera.position.x += speed;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  </script>
+</body>
+</html>
 
