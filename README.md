@@ -1,2 +1,2 @@
 # hackClub
-Sereis of Hackclub projects
+Series of Hackclub projects
